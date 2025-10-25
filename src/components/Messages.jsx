@@ -10,7 +10,7 @@ const Messages = () => {
     {
       name: 'Dr. Raghav Singh',
       designation: 'Secretary',
-      photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80',
+      photo: 'https://as1.ftcdn.net/v2/jpg/03/77/30/16/1000_F_377301660_ClhyVNc3ThqShLjkfk7zq0SeCenc4xb7.jpg',
       message: 'Everyone must read a contract A.S. Inter College has earned reputation among the parent. This college takes pride in being a place where students and faculty can pursue knowledge without boundaries...',
       fallback: 'https://ui-avatars.com/api/?name=Dr+Raghav+Singh&size=400&background=0C2E5C&color=FDB813&bold=true'
     }
