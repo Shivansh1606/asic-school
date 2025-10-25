@@ -7,14 +7,12 @@ const Activities = () => {
   const type = searchParams.get('type') || 'all';
   const [activeCategory, setActiveCategory] = useState('All');
 
-  // Activity Categories
   const categories = [
     'All', 'Sports', 'Cultural', 'Academic', 'Social Service', 
     'NCC', 'Scout & Guide', 'Science Exhibition', 'Annual Function',
     'Independence Day', 'Republic Day', 'Teachers Day', 'Competitions'
   ];
 
-  // Sample Activities Data
   const activitiesData = [
     {
       id: 1,
@@ -24,7 +22,7 @@ const Activities = () => {
       location: 'College Ground',
       time: '9:00 AM - 4:00 PM',
       description: 'Annual Sports Day celebration with various athletic competitions including running, long jump, high jump, and team sports.',
-      image: '/activities/sports-day.jpg',
+      image: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=600&q=80',
       participants: '500+',
       status: 'completed'
     },
@@ -36,7 +34,7 @@ const Activities = () => {
       location: 'Main Auditorium',
       time: '10:00 AM - 5:00 PM',
       description: 'Students showcased their talents in dance, music, drama, and art. Traditional and modern performances were presented.',
-      image: '/activities/cultural-fest.jpg',
+      image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=80',
       participants: '300+',
       status: 'completed'
     },
@@ -48,7 +46,7 @@ const Activities = () => {
       location: 'Science Block',
       time: '9:00 AM - 3:00 PM',
       description: 'Students presented innovative science projects and experiments. Demonstrations on robotics, chemistry, and physics.',
-      image: '/activities/science-expo.jpg',
+      image: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=600&q=80',
       participants: '200+',
       status: 'completed'
     },
@@ -60,7 +58,7 @@ const Activities = () => {
       location: 'School Campus',
       time: '8:00 AM - 11:00 AM',
       description: 'Flag hoisting ceremony followed by patriotic songs, speeches, and cultural programs celebrating Indian independence.',
-      image: '/activities/independence-day.jpg',
+      image: 'https://images.unsplash.com/photo-1562601579-599dec564e06?w=600&q=80',
       participants: '1000+',
       status: 'completed'
     },
@@ -72,7 +70,7 @@ const Activities = () => {
       location: 'Main Hall',
       time: '10:00 AM - 2:00 PM',
       description: 'Students organized special programs to honor and appreciate teachers. Fun games, performances, and awards ceremony.',
-      image: '/activities/teachers-day.jpg',
+      image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80',
       participants: '400+',
       status: 'completed'
     },
@@ -84,7 +82,7 @@ const Activities = () => {
       location: 'NCC Ground',
       time: 'Full Day',
       description: '7-day intensive NCC training camp covering drill, rifle training, parade, and physical fitness activities.',
-      image: '/activities/ncc-camp.jpg',
+      image: 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=600&q=80',
       participants: '150+',
       status: 'completed'
     },
@@ -96,7 +94,7 @@ const Activities = () => {
       location: 'Main Campus',
       time: '8:00 AM - 11:00 AM',
       description: 'Grand parade ceremony with students march-past, cultural performances, and speeches on Constitution of India.',
-      image: '/activities/republic-day.jpg',
+      image: 'https://images.unsplash.com/photo-1562601579-599dec564e06?w=600&q=80',
       participants: '800+',
       status: 'completed'
     },
@@ -108,7 +106,7 @@ const Activities = () => {
       location: 'Conference Hall',
       time: '11:00 AM - 3:00 PM',
       description: 'Regional level quiz competition on general knowledge, current affairs, and academic subjects.',
-      image: '/activities/quiz-competition.jpg',
+      image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80',
       participants: '80+',
       status: 'completed'
     },
@@ -120,7 +118,7 @@ const Activities = () => {
       location: 'Medical Room',
       time: '9:00 AM - 4:00 PM',
       description: 'Social service initiative in collaboration with local blood bank. Students and staff donated blood.',
-      image: '/activities/blood-donation.jpg',
+      image: 'https://images.unsplash.com/photo-1615461066159-fea0960485d5?w=600&q=80',
       participants: '100+',
       status: 'completed'
     },
@@ -132,7 +130,7 @@ const Activities = () => {
       location: 'Main Auditorium',
       time: '5:00 PM - 9:00 PM',
       description: 'Grand annual function with prize distribution, cultural performances, guest speeches, and student achievements.',
-      image: '/activities/annual-function.jpg',
+      image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=600&q=80',
       participants: '1500+',
       status: 'upcoming'
     },
@@ -144,7 +142,7 @@ const Activities = () => {
       location: 'Camping Ground',
       time: '3 Days',
       description: 'Outdoor camping activities including tent pitching, first aid training, survival skills, and nature exploration.',
-      image: '/activities/scout-camp.jpg',
+      image: 'https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=600&q=80',
       participants: '120+',
       status: 'completed'
     },
@@ -156,13 +154,12 @@ const Activities = () => {
       location: 'Main Hall',
       time: '11:00 AM - 2:00 PM',
       description: 'Recognition and award ceremony for students who excelled in board exams and academic competitions.',
-      image: '/activities/academic-awards.jpg',
+      image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&q=80',
       participants: '250+',
       status: 'completed'
     }
   ];
 
-  // Filter activities based on selected category
   const filteredActivities = activeCategory === 'All' 
     ? activitiesData 
     : activitiesData.filter(activity => activity.category === activeCategory);
@@ -173,12 +170,9 @@ const Activities = () => {
       <div className="relative h-72 bg-gradient-to-r from-[#0C2E5C] to-[#1a4d8f]">
         <div className="absolute inset-0">
           <img
-            src="/activities-hero.jpg"
+            src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1920&q=80"
             alt="Activities"
-            className="w-full h-full object-cover opacity-30"
-            onError={(e) => {
-              e.target.style.display = 'none';
-            }}
+            className="w-full h-full object-cover opacity-20"
           />
         </div>
         <div className="absolute inset-0 bg-black bg-opacity-40"></div>
@@ -218,7 +212,6 @@ const Activities = () => {
       {/* Activities Grid Section */}
       <div className="bg-gray-50 py-16">
         <div className="max-w-7xl mx-auto px-4">
-          {/* Results Count */}
           <div className="mb-8">
             <p className="text-gray-600 text-lg">
               Showing <span className="font-bold text-[#0C2E5C]">{filteredActivities.length}</span> activities
@@ -228,7 +221,6 @@ const Activities = () => {
             </p>
           </div>
 
-          {/* Activities Grid */}
           {filteredActivities.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredActivities.map((activity) => (
@@ -236,17 +228,12 @@ const Activities = () => {
                   key={activity.id}
                   className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group"
                 >
-                  {/* Activity Image */}
                   <div className="relative h-56 overflow-hidden">
                     <img
                       src={activity.image}
                       alt={activity.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      onError={(e) => {
-                        e.target.src = `https://via.placeholder.com/400x300/0C2E5C/FFFFFF?text=${activity.category}`;
-                      }}
                     />
-                    {/* Status Badge */}
                     <div className="absolute top-4 right-4">
                       <span
                         className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase ${
@@ -258,7 +245,6 @@ const Activities = () => {
                         {activity.status}
                       </span>
                     </div>
-                    {/* Category Badge */}
                     <div className="absolute bottom-4 left-4">
                       <span className="bg-[#0C2E5C] text-white px-4 py-1.5 rounded-full text-xs font-semibold">
                         {activity.category}
@@ -266,13 +252,11 @@ const Activities = () => {
                     </div>
                   </div>
 
-                  {/* Activity Content */}
                   <div className="p-6">
                     <h3 className="text-xl font-bold text-[#0C2E5C] mb-3 group-hover:text-[#FDB813] transition">
                       {activity.title}
                     </h3>
 
-                    {/* Activity Meta Info */}
                     <div className="space-y-2 mb-4">
                       <div className="flex items-center text-sm text-gray-600">
                         <FaCalendar className="text-[#FDB813] mr-2 flex-shrink-0" />
@@ -288,40 +272,22 @@ const Activities = () => {
                       </div>
                     </div>
 
-                    {/* Description */}
                     <p className="text-gray-700 text-sm leading-relaxed mb-4 line-clamp-3">
                       {activity.description}
                     </p>
 
-                    {/* Footer */}
                     <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                       <div className="flex items-center">
                         <span className="text-[#0C2E5C] font-bold text-lg">{activity.participants}</span>
                         <span className="text-gray-500 text-sm ml-2">Participants</span>
                       </div>
-                      <button className="text-[#FDB813] font-semibold text-sm hover:text-[#0C2E5C] transition flex items-center">
-                        View Details
-                        <svg
-                          className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 5l7 7-7 7"
-                          />
-                        </svg>
-                      </button>
+                      
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            // No Activities Found Message
             <div className="text-center py-16">
               <div className="text-6xl mb-4">📅</div>
               <h3 className="text-2xl font-bold text-gray-700 mb-2">No Activities Found</h3>
