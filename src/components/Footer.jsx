@@ -94,7 +94,7 @@ const Footer = () => {
       <div className="border-t border-gray-700">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
-            <p>© Pwored by GrowingUpp.</p>
+            <p>© Made by GrowingUpp.</p>
             <div className="flex space-x-4 mt-2 md:mt-0">
               <Link to="/privacy" className="hover:text-[#FDB813] transition">Privacy Policy</Link>
               <Link to="/terms" className="hover:text-[#FDB813] transition">Terms & Conditions</Link>
