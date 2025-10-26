@@ -94,7 +94,7 @@ const Activities = () => {
       location: 'Main Campus',
       time: '8:00 AM - 11:00 AM',
       description: 'Grand parade ceremony with students march-past, cultural performances, and speeches on Constitution of India.',
-      image: 'https://images.unsplash.com/photo-1562601579-599dec564e06?w=600&q=80',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqmlGzU59pS_hnqfAfE8w3FiJ4BIRkh27hRk2rDMkYlA&s=10',
       participants: '800+',
       status: 'completed'
     },
