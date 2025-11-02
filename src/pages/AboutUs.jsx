@@ -1,0 +1,93 @@
+const AboutUs = () => {
+  return (
+    <div>
+      {/* Hero Section */}
+      <div className="relative h-64 bg-gradient-to-r from-[#0C2E5C] to-[#1a4d8f]">
+        <div className="absolute inset-0">
+          <img
+            src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1920&q=80"
+            alt="College Building"
+            className="w-full h-full object-cover opacity-20"
+          />
+        </div>
+        <div className="absolute inset-0 bg-black bg-opacity-30"></div>
+        <div className="relative max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
+          <h1 className="text-4xl font-bold text-white">About Us</h1>
+          <p className="text-white">Home / About Us</p>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="max-w-7xl mx-auto px-4 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-12">
+          <div>
+            <img
+              src="https://t3.ftcdn.net/jpg/04/11/19/64/360_F_411196492_ALeI8x6briszcGigHOP3rWfkNqDh7D18.jpg"
+              alt="Students Learning"
+              className="rounded-lg shadow-2xl w-full h-96 object-cover"
+            />
+          </div>
+          <div className="bg-white rounded-lg shadow-lg p-8">
+            <h2 className="text-3xl font-bold text-[#0C2E5C] mb-6">About Our College</h2>
+            <div className="prose max-w-none text-gray-700 leading-relaxed space-y-4">
+              <p>
+                Our guiding principle is constant change, Motivation and up gradation, creating state-of-the-art 
+                knowledge infrastructure for our students, instilling in them the ability to learn so that they can face 
+                any challenge anywhere in the world.
+              </p>
+              <p>
+                Education is the harmonious development of the physical, mental, spiritual and social faculties. 
+                It is the process of awakening the thirst for knowledge and kindling the inquisitive spirit that 
+                lead to the overall development of students.
+              </p>
+              <p>
+                We have inherited the great spirits of our pioneers to carry their legacy forward, the legacy of 
+                imparting education that prepares the students intellectually for mature life. An effective educational 
+                system should have a holistic approach that prepares the students for the workforce.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Facilities Section */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img
+              src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=600&q=80"
+              alt="Library"
+              className="w-full h-48 object-cover"
+            />
+            <div className="p-6">
+              <h3 className="text-xl font-bold text-[#0C2E5C] mb-2">Modern Library</h3>
+              <p className="text-gray-600">Well-equipped library with thousands of books and digital resources.</p>
+            </div>
+          </div>
+          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img
+              src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80"
+              alt="Computer Lab"
+              className="w-full h-48 object-cover"
+            />
+            <div className="p-6">
+              <h3 className="text-xl font-bold text-[#0C2E5C] mb-2">Computer Labs</h3>
+              <p className="text-gray-600">State-of-the-art computer laboratories with latest technology.</p>
+            </div>
+          </div>
+          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img
+              src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80"
+              alt="Classroom"
+              className="w-full h-48 object-cover"
+            />
+            <div className="p-6">
+              <h3 className="text-xl font-bold text-[#0C2E5C] mb-2">Smart Classrooms</h3>
+              <p className="text-gray-600">Modern classrooms with interactive learning environment.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AboutUs;
