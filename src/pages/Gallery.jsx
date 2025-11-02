@@ -1,103 +1,58 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { galleryAPI } from '../services/api';
 
 const Gallery = () => {
   const [activeFilter, setActiveFilter] = useState('All');
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const filters = [
-    'All', 'Sports', 'Cultural', 'Academic', 'Events', 'Facilities', 
-    'NCC', 'Science', 'Celebrations'
+    'All', 'Sports', 'Cultural', 'Academic', 'Events', 
+    'Facilities', 'NCC', 'Science', 'Celebrations'
   ];
 
-  const galleryImages = [
-    {
-      id: 1,
-      src: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&q=80',
-      category: 'Sports',
-      title: 'Annual Sports Day'
-    },
-    {
-      id: 2,
-      src: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80',
-      category: 'Cultural',
-      title: 'Cultural Fest'
-    },
-    {
-      id: 3,
-      src: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&q=80',
-      category: 'Science',
-      title: 'Science Exhibition'
-    },
-    {
-      id: 4,
-      src: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&q=80',
-      category: 'Academic',
-      title: 'Classroom Learning'
-    },
-    {
-      id: 5,
-      src: 'https://images.unsplash.com/photo-1562601579-599dec564e06?w=800&q=80',
-      category: 'Events',
-      title: 'Independence Day'
-    },
-    {
-      id: 6,
-      src: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=800&q=80',
-      category: 'Facilities',
-      title: 'College Library'
-    },
-    {
-      id: 7,
-      src: 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=800&q=80',
-      category: 'NCC',
-      title: 'NCC Training'
-    },
-    {
-      id: 8,
-      src: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&q=80',
-      category: 'Celebrations',
-      title: 'Teachers Day'
-    },
-    {
-      id: 9,
-      src: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80',
-      category: 'Academic',
-      title: 'Student Achievement'
-    },
-    {
-      id: 10,
-      src: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80',
-      category: 'Facilities',
-      title: 'Computer Lab'
-    },
-    {
-      id: 11,
-      src: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80',
-      category: 'Academic',
-      title: 'Group Study'
-    },
-    {
-      id: 12,
-      src: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&q=80',
-      category: 'Events',
-      title: 'Annual Function'
+  useEffect(() => {
+    fetchGalleryImages();
+  }, [activeFilter]);
+
+  const fetchGalleryImages = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = activeFilter === 'All' 
+        ? await galleryAPI.getAll()
+        : await galleryAPI.getByCategory(activeFilter);
+      
+      console.log('API Response:', response.data); // Debug
+      setGalleryImages(response.data.results || response.data);
+    } catch (error) {
+      console.error('Error fetching gallery images:', error);
+      setError('Failed to load gallery images. Please try again later.');
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
-  const filteredImages = activeFilter === 'All' 
-    ? galleryImages 
-    : galleryImages.filter(img => img.category === activeFilter);
+  // Function to get correct image URL
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return 'https://via.placeholder.com/400x300?text=No+Image';
+    
+    // If already a full URL, return as is
+    if (imagePath.startsWith('http')) return imagePath;
+    
+    // Remove leading slash if exists
+    const cleanPath = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
+    
+    // Construct full URL
+    return `http://localhost:8000/${cleanPath}`;
+  };
 
   return (
     <div>
       {/* Hero Section */}
       <div className="relative h-64 bg-gradient-to-r from-[#0C2E5C] to-[#1a4d8f]">
-        <div className="absolute inset-0">
-          <img
-            src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1920&q=80"
-            alt="Gallery"
-            className="w-full h-full object-cover opacity-20"
-          />
-        </div>
         <div className="absolute inset-0 bg-black bg-opacity-30"></div>
         <div className="relative max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
           <h1 className="text-4xl font-bold text-white">College Gallery</h1>
@@ -128,23 +83,53 @@ const Gallery = () => {
 
       {/* Gallery Grid */}
       <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filteredImages.map((image) => (
-            <div key={image.id} className="group relative overflow-hidden rounded-lg shadow-lg cursor-pointer">
-              <img
-                src={image.src}
-                alt={image.title}
-                className="w-full h-64 object-cover group-hover:scale-110 transition duration-300"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-300">
-                <div className="absolute bottom-4 left-4 right-4">
-                  <h3 className="text-white font-bold text-lg">{image.title}</h3>
-                  <p className="text-gray-200 text-sm">{image.category}</p>
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-[#FDB813]"></div>
+            <p className="mt-4 text-gray-600">Loading gallery...</p>
+          </div>
+        ) : error ? (
+          <div className="text-center py-12">
+            <p className="text-red-600">{error}</p>
+            <button 
+              onClick={fetchGalleryImages}
+              className="mt-4 bg-[#FDB813] text-[#0C2E5C] px-6 py-2 rounded font-semibold hover:bg-[#0C2E5C] hover:text-white transition"
+            >
+              Retry
+            </button>
+          </div>
+        ) : galleryImages.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-gray-600 text-lg">No images found in this category.</p>
+            <p className="text-gray-500 mt-2">Please add images from the admin panel.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {galleryImages.map((image) => (
+              <div key={image.id} className="group relative overflow-hidden rounded-lg shadow-lg cursor-pointer bg-gray-100">
+                <img
+                  src={getImageUrl(image.image)}
+                  alt={image.title}
+                  className="w-full h-64 object-cover group-hover:scale-110 transition duration-300"
+                  onError={(e) => {
+                    console.error('Image load error:', e.target.src);
+                    e.target.src = 'https://via.placeholder.com/400x300?text=Image+Not+Found';
+                  }}
+                  onLoad={() => console.log('Image loaded:', getImageUrl(image.image))}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-300">
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <h3 className="text-white font-bold text-lg">{image.title}</h3>
+                    <p className="text-gray-200 text-sm">{image.category}</p>
+                    {image.description && (
+                      <p className="text-gray-300 text-xs mt-1">{image.description}</p>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

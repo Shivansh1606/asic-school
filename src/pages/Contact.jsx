@@ -1,99 +1,210 @@
+import { useState } from 'react';
+import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import { contactAPI } from '../services/api';
+
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: ''
+  });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    setSuccess(false);
+
+    try {
+      await contactAPI.submit(formData);
+      setSuccess(true);
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: ''
+      });
+      setTimeout(() => setSuccess(false), 5000);
+    } catch (err) {
+      setError('Failed to send message. Please try again.');
+      console.error('Contact form error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
-      {/* Hero Section with Background */}
-      <div 
-        className="relative h-80 bg-cover bg-center"
-        style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80)'
-        }}
-      >
-        <div className="absolute inset-0 bg-[#0C2E5C] bg-opacity-70"></div>
+      {/* Hero Section */}
+      <div className="relative h-80 bg-gradient-to-r from-[#0C2E5C] to-[#1a4d8f]">
+        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
         <div className="relative max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
           <div>
             <h1 className="text-5xl font-bold text-white mb-2">Contact Us</h1>
-            <p className="text-xl text-gray-200">We'd love to hear from you</p>
+            <p className="text-xl text-gray-200">Get in Touch with ASIC Mawana</p>
           </div>
           <p className="text-white text-lg">Home / Contact</p>
         </div>
       </div>
 
-      {/* Content */}
+      {/* Contact Content */}
       <div className="max-w-7xl mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold text-center text-[#0C2E5C] mb-4">Get In Touch</h2>
-        <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-          Have questions about admissions, courses, or anything else? We're here to help! 
-          Fill out the form below or visit us in person.
-        </p>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Form */}
           <div className="bg-white rounded-lg shadow-lg p-8">
-            <h3 className="text-2xl font-bold text-[#0C2E5C] mb-6">Send us a Message</h3>
-            <form className="space-y-4">
-              <input
-                type="text"
-                placeholder="Enter Name"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FDB813]"
-              />
-              <input
-                type="email"
-                placeholder="Enter Email"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FDB813]"
-              />
-              <input
-                type="tel"
-                placeholder="Enter Phone No."
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FDB813]"
-              />
-              <input
-                type="text"
-                placeholder="Enter Subject"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FDB813]"
-              />
-              <textarea
-                placeholder="Enter Message"
-                rows="5"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FDB813]"
-              ></textarea>
-              <button className="w-full bg-[#FDB813] text-[#0C2E5C] py-3 rounded-lg font-bold hover:bg-[#0C2E5C] hover:text-white transition">
-                Send Message
+            <h2 className="text-3xl font-bold text-[#0C2E5C] mb-6">Send us a Message</h2>
+            
+            {success && (
+              <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+                Message sent successfully! We'll get back to you soon.
+              </div>
+            )}
+            
+            {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                {error}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">Name *</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#FDB813]"
+                  placeholder="Your Full Name"
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">Email *</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#FDB813]"
+                  placeholder="your.email@example.com"
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">Phone *</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#FDB813]"
+                  placeholder="+91 XXXXX XXXXX"
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">Subject *</label>
+                <input
+                  type="text"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#FDB813]"
+                  placeholder="Subject of your message"
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">Message *</label>
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                  rows="5"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#FDB813]"
+                  placeholder="Your message here..."
+                ></textarea>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-[#FDB813] text-[#0C2E5C] py-3 rounded-lg font-bold hover:bg-[#0C2E5C] hover:text-white transition disabled:opacity-50"
+              >
+                {loading ? 'Sending...' : 'Send Message'}
               </button>
             </form>
           </div>
 
-          {/* Map & Contact Info */}
-          <div className="space-y-6">
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-xl font-bold text-[#0C2E5C] mb-4">Contact Information</h3>
-              <div className="space-y-4 text-gray-700">
-                <div>
-                  <h4 className="font-semibold text-[#0C2E5C]">Address:</h4>
-                  <p>Mawana, Meerut (U.P.)</p>
+          {/* Contact Info */}
+          <div>
+            <h2 className="text-3xl font-bold text-[#0C2E5C] mb-6">Contact Information</h2>
+            
+            <div className="space-y-6">
+              <div className="flex items-start gap-4">
+                <div className="bg-[#FDB813] p-4 rounded-full">
+                  <FaMapMarkerAlt className="text-[#0C2E5C] text-2xl" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-[#0C2E5C]">Phone:</h4>
-                  <p>+91-708 8264 764</p>
+                  <h3 className="font-bold text-lg text-[#0C2E5C]">Address</h3>
+                  <p className="text-gray-600">
+                    Anglo Sanskrit Inter College<br />
+                    Mawana, Meerut<br />
+                    Uttar Pradesh, India
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <div className="bg-[#FDB813] p-4 rounded-full">
+                  <FaPhone className="text-[#0C2E5C] text-2xl" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-[#0C2E5C]">Email:</h4>
-                  <p>asicmawana@gmail.com</p>
+                  <h3 className="font-bold text-lg text-[#0C2E5C]">Phone</h3>
+                  <p className="text-gray-600">+91-708 8264 764</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <div className="bg-[#FDB813] p-4 rounded-full">
+                  <FaEnvelope className="text-[#0C2E5C] text-2xl" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-[#0C2E5C]">Office Hours:</h4>
-                  <p>Monday - Saturday: 9:00 AM - 4:00 PM</p>
-                  <p>Sunday: Closed</p>
+                  <h3 className="font-bold text-lg text-[#0C2E5C]">Email</h3>
+                  <p className="text-gray-600">asicmawana@gmail.com</p>
                 </div>
               </div>
             </div>
 
-            <div>
+            {/* Map */}
+            <div className="mt-8 rounded-lg overflow-hidden shadow-lg">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3486.9476!2d77.9275!3d29.0897!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjnCsDA1JzIzLjAiTiA3N8KwNTUnMzkuMCJF!5e0!3m2!1sen!2sin!4v1234567890"
-                className="w-full h-96 rounded-lg shadow-lg"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3495.123456789!2d77.5!3d29.1!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjnCsDA2JzAwLjAiTiA3N8KwMzAnMDAuMCJF!5e0!3m2!1sen!2sin!4v1234567890"
+                width="100%"
+                height="300"
                 style={{ border: 0 }}
                 allowFullScreen=""
                 loading="lazy"
+                title="ASIC Mawana Location"
               ></iframe>
             </div>
           </div>

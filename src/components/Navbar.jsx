@@ -29,18 +29,17 @@ const Navbar = () => {
             </div>
            
             <Link 
-                to="/login"
-                className="bg-white text-[#0C2E5C] px-4 py-1 rounded text-sm font-semibold hover:bg-[#FDB813] transition"
+              to="/login"
+              className="bg-white text-[#0C2E5C] px-4 py-1 rounded text-sm font-semibold hover:bg-[#FDB813] transition"
             >
-            Login
+              Login
             </Link>
             <Link
-                to="/registration"
-                className="bg-[#FDB813] text-[#0C2E5C] px-4 py-1 rounded text-sm font-bold hover:bg-white transition"
+              to="/registration"
+              className="bg-[#FDB813] text-[#0C2E5C] px-4 py-1 rounded text-sm font-bold hover:bg-white transition"
             >
-            New Registration
+              New Registration
             </Link>
-
           </div>
         </div>
       </div>
@@ -100,25 +99,22 @@ const Navbar = () => {
                 </div>
               </div>
 
-              {/* Management Dropdown */}
+              {/* Management Dropdown - UPDATED WITH ALL 4 PAGES */}
               <div className="relative group">
                 <button className="px-3 py-2 text-gray-700 hover:text-[#FDB813] font-semibold transition flex items-center whitespace-nowrap">
                   MANAGEMENT <FaChevronDown className="ml-1 text-xs" />
                 </button>
                 <div className="absolute left-0 mt-2 w-56 bg-white shadow-lg rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                  <Link to="/management?section=committee" className="block px-4 py-2 text-gray-700 hover:bg-[#FDB813] hover:text-white whitespace-nowrap">
+                  <Link to="/management" className="block px-4 py-2 text-gray-700 hover:bg-[#FDB813] hover:text-white whitespace-nowrap">
                     College Committee
                   </Link>
-                  <Link to="/management?section=management-committee" className="block px-4 py-2 text-gray-700 hover:bg-[#FDB813] hover:text-white whitespace-nowrap">
-                    Management Committee
-                  </Link>
-                  <Link to="/management?section=president" className="block px-4 py-2 text-gray-700 hover:bg-[#FDB813] hover:text-white whitespace-nowrap">
+                  <Link to="/management/president-message" className="block px-4 py-2 text-gray-700 hover:bg-[#FDB813] hover:text-white whitespace-nowrap">
                     President's Message
                   </Link>
-                  <Link to="/management?section=secretary" className="block px-4 py-2 text-gray-700 hover:bg-[#FDB813] hover:text-white whitespace-nowrap">
+                  <Link to="/management/secretary-message" className="block px-4 py-2 text-gray-700 hover:bg-[#FDB813] hover:text-white whitespace-nowrap">
                     Secretary's Message
                   </Link>
-                  <Link to="/management?section=principal" className="block px-4 py-2 text-gray-700 hover:bg-[#FDB813] hover:text-white whitespace-nowrap">
+                  <Link to="/management/principal-message" className="block px-4 py-2 text-gray-700 hover:bg-[#FDB813] hover:text-white whitespace-nowrap">
                     Principal's Message
                   </Link>
                 </div>
@@ -158,7 +154,7 @@ const Navbar = () => {
             </button>
           </div>
 
-          {/* Mobile Menu */}
+          {/* Mobile Menu - UPDATED WITH MANAGEMENT LINKS */}
           {isOpen && (
             <div className="lg:hidden pb-4">
               <Link to="/" className="block px-4 py-2 text-gray-700 hover:bg-[#FDB813] hover:text-white">
@@ -170,9 +166,24 @@ const Navbar = () => {
               <Link to="/staff-details" className="block px-4 py-2 text-gray-700 hover:bg-[#FDB813] hover:text-white">
                 STAFF DETAILS
               </Link>
-              <Link to="/management" className="block px-4 py-2 text-gray-700 hover:bg-[#FDB813] hover:text-white">
+              
+              {/* Management Mobile Links */}
+              <div className="px-4 py-2 text-gray-700 font-semibold">
                 MANAGEMENT
+              </div>
+              <Link to="/management" className="block pl-8 py-2 text-gray-600 hover:bg-[#FDB813] hover:text-white">
+                College Committee
               </Link>
+              <Link to="/management/president-message" className="block pl-8 py-2 text-gray-600 hover:bg-[#FDB813] hover:text-white">
+                President's Message
+              </Link>
+              <Link to="/management/secretary-message" className="block pl-8 py-2 text-gray-600 hover:bg-[#FDB813] hover:text-white">
+                Secretary's Message
+              </Link>
+              <Link to="/management/principal-message" className="block pl-8 py-2 text-gray-600 hover:bg-[#FDB813] hover:text-white">
+                Principal's Message
+              </Link>
+
               <Link to="/course" className="block px-4 py-2 text-gray-700 hover:bg-[#FDB813] hover:text-white">
                 COURSE
               </Link>

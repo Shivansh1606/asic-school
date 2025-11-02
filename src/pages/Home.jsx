@@ -114,47 +114,7 @@ const Home = () => {
       <div className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-[#0C2E5C] mb-12">Quick Access</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {[
-              { 
-                icon: '📋', 
-                title: 'DOWNLOAD PAPER', 
-                color: 'from-orange-400 to-orange-500'
-              },
-              { 
-                icon: '📚', 
-                title: 'SCIENCE LIBRARY', 
-                color: 'from-yellow-400 to-yellow-500'
-              },
-              { 
-                icon: '💼', 
-                title: 'COMMERCE', 
-                color: 'from-pink-400 to-pink-500'
-              },
-              { 
-                icon: '⚖️', 
-                title: 'MIDDLE LEVEL', 
-                color: 'from-cyan-400 to-cyan-500'
-              },
-              { 
-                icon: '🏛️', 
-                title: 'TRADITIONAL', 
-                color: 'from-orange-500 to-orange-600'
-              }
-            ].map((item, index) => (
-              <div 
-                key={index} 
-                className={`bg-gradient-to-br ${item.color} p-5 rounded-xl text-center hover:scale-105 transition-all duration-300 cursor-pointer shadow-xl hover:shadow-2xl`}
-              >
-                <div className="bg-white w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3 shadow-md">
-                  <span className="text-2xl">{item.icon}</span>
-                </div>
-                <h3 className="text-white font-bold text-xs uppercase tracking-wide leading-tight">
-                  {item.title}
-                </h3>
-              </div>
-            ))}
-          </div>
+          
         </div>
       </div>
     </div>

@@ -1,123 +1,191 @@
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { staffAPI } from '../services/api';
 
 const StaffDetails = () => {
   const [searchParams] = useSearchParams();
-  const type = searchParams.get('type') || 'teaching';
+  const [activeTab, setActiveTab] = useState(searchParams.get('type') || 'teaching');
+  const [staffMembers, setStaffMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const teachingStaff = [
-    { sn: 1, name: 'DR.MEGHRAJ SINGH', designation: 'PRINCIPAL', subject: 'CHEMISTRY', qualification: 'M.Sc.(Inorg.),M.Sc.(Phy.),B.Ed.,Ph.D.', dob: '28.12.1979', doi: '08-01-2022' },
-    { sn: 2, name: 'KRISHNA CHANDRA', designation: 'Vice Principal', subject: 'MATHEMATICS', qualification: 'M.Sc.(Mathematics), B.Ed.', dob: '26.02.1978', doi: '17-05-2003' },
-    { sn: 3, name: 'MINAKSHI', designation: 'HOD-Science Dept', subject: 'MATHEMATICS', qualification: 'M.A. (Mathematics), B.Ed.', dob: '19.08.1973', doi: '05-11-2003' },
-    { sn: 4, name: 'NIRPENDRA KUMAR BHATNAGER', designation: 'LECTURER', subject: 'PHYSICS', qualification: 'M.Sc. (Physics),B.Ed.', dob: '18.07.1975', doi: '13-07-2001' },
-    { sn: 5, name: 'SUNIL KUMAR', designation: 'LECTURER', subject: 'CIVICS', qualification: 'B.Sc.,M.A.(Pol.Science)', dob: '11.01.1978', doi: '26-04-2010' },
-    { sn: 6, name: 'AMITA KANSAL', designation: 'LECTURER', subject: 'PHYSICS', qualification: 'M.Sc. (Physics),B.Ed.', dob: '30.06.1963', doi: '08-12-2005' },
-    { sn: 7, name: 'DALVIR SINGH', designation: 'HOD-Commerce Dept', subject: 'ECONOMICS', qualification: 'M.Sc.(Maths),M.A.(Eco.,Hist.Edu.),B.Ed.', dob: '05.01.1968', doi: '21-09-2001' },
-    { sn: 8, name: 'RAM BHOOL NATH', designation: 'LECTURER', subject: 'ENGLISH', qualification: 'M.A. (English),B.Ed', dob: '05.12.1976', doi: '17-11-2004' },
-    { sn: 9, name: 'SANDEEP KUMAR', designation: 'LECTURER', subject: 'GEOGRAPHY', qualification: 'M.A. (Geography),B.Ed', dob: '04.04.1986', doi: '08-08-2020' },
-    { sn: 10, name: 'PRITAM SINGH', designation: 'LECTURER', subject: 'BIOLOGY', qualification: 'M.Sc. (Zoology).,B.Ed.', dob: '01.07.1971', doi: '01-11-2004' },
-  ];
+  useEffect(() => {
+    fetchStaffMembers();
+  }, [activeTab]);
 
-  const nonTeachingStaff = [
-    { sn: '1-', name: 'Amit Yadav', designation: 'Chief Supervisior' },
-    { sn: '2-', name: 'Naresh Singh', designation: 'Head Poen' },
-    { sn: '3-', name: 'Rajesh Kumar', designation: 'Clerk' },
-    { sn: '4-', name: 'Suresh Kumar', designation: 'Clerk' },
-    { sn: '5-', name: 'Anil Kumar', designation: 'Clerk' },
-    { sn: '6-', name: 'Vijay Kumar', designation: 'Peon' },
-    { sn: '7-', name: 'Ramesh Kumar', designation: 'Peon' },
-  ];
+  const fetchStaffMembers = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = activeTab === 'teaching' 
+        ? await staffAPI.getTeaching()
+        : await staffAPI.getNonTeaching();
+      
+      setStaffMembers(response.data.results || response.data);
+    } catch (error) {
+      console.error('Error fetching staff members:', error);
+      setError('Failed to load staff members. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Dynamic content based on active tab
+  const getPageContent = () => {
+    if (activeTab === 'teaching') {
+      return {
+        title: 'Teaching Faculty',
+        description: 'For more than a century Anglo Sanskrit Inter College has been committed to academic excellence with social justice.',
+        sectionTitle: 'Teaching Staff'
+      };
+    } else {
+      return {
+        title: 'Non Teaching Staff',
+        description: "College environment needs a superb teaching faculty! But, there can't be reasonable performance and no result without the presence of effective non-teaching faculty.",
+        sectionTitle: 'Non Teaching Staff'
+      };
+    }
+  };
+
+  const pageContent = getPageContent();
 
   return (
-    <div>
+    <div className="bg-gray-50 min-h-screen">
       {/* Hero Section */}
-      <div className="relative h-64 bg-gradient-to-r from-[#0C2E5C] to-[#1a4d8f]">
-        <div className="absolute inset-0 bg-black bg-opacity-30"></div>
+      <div className="relative h-80 bg-gradient-to-r from-[#0C2E5C] to-[#1a4d8f]">
+        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
         <div className="relative max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
-          <h1 className="text-4xl font-bold text-white">
-            {type === 'teaching' ? 'Teaching Faculty' : 'Non Teaching Staff'}
-          </h1>
-          <p className="text-white">Home / Staff Details</p>
+          <div>
+            <h1 className="text-5xl font-bold text-white mb-2">Our Faculty</h1>
+            <p className="text-xl text-gray-200">Experienced and Dedicated Staff Members</p>
+          </div>
+          <p className="text-white text-lg">Home / Staff</p>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 py-16">
-        {type === 'teaching' ? (
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            {/* Page Title */}
-            <div className="bg-gray-50 px-6 py-4 border-b-2 border-[#0C2E5C]">
-              <h2 className="text-2xl font-bold text-[#0C2E5C]">Teaching Faculty</h2>
-              <p className="text-sm text-gray-600 mt-1">
-                For more than a century Anglo Sanskrit Inter College has been committed to academic excellence with social justice.
-              </p>
-            </div>
+      {/* Tab Navigation */}
+      <div className="bg-white shadow-md sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex gap-2 py-4">
+            <button
+              onClick={() => setActiveTab('teaching')}
+              className={`px-6 py-3 rounded-lg font-semibold transition ${
+                activeTab === 'teaching'
+                  ? 'bg-[#FDB813] text-[#0C2E5C]'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              Teaching Staff
+            </button>
+            <button
+              onClick={() => setActiveTab('non_teaching')}
+              className={`px-6 py-3 rounded-lg font-semibold transition ${
+                activeTab === 'non_teaching'
+                  ? 'bg-[#FDB813] text-[#0C2E5C]'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              Non-Teaching Staff
+            </button>
+          </div>
+        </div>
+      </div>
 
-            {/* Teaching Staff Heading */}
-            <div className="px-6 py-4 bg-white border-b">
-              <h3 className="text-xl font-bold text-[#0C2E5C]">Teaching Staff</h3>
-            </div>
-
-            {/* Table */}
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="bg-gray-100">
-                    <th className="border border-gray-300 px-4 py-3 text-left text-sm font-semibold text-gray-700">S.N.</th>
-                    <th className="border border-gray-300 px-4 py-3 text-left text-sm font-semibold text-gray-700">NAME OF FACULTY</th>
-                    <th className="border border-gray-300 px-4 py-3 text-left text-sm font-semibold text-gray-700">DESIGNATION</th>
-                    <th className="border border-gray-300 px-4 py-3 text-left text-sm font-semibold text-gray-700">SUBJECT</th>
-                    <th className="border border-gray-300 px-4 py-3 text-left text-sm font-semibold text-gray-700">QUALIFICATION</th>
-                    <th className="border border-gray-300 px-4 py-3 text-left text-sm font-semibold text-gray-700">D.O.B</th>
-                    <th className="border border-gray-300 px-4 py-3 text-left text-sm font-semibold text-gray-700">DOI</th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white">
-                  {teachingStaff.map((staff, index) => (
-                    <tr key={index} className={index === 0 ? 'bg-yellow-50' : 'hover:bg-gray-50'}>
-                      <td className="border border-gray-300 px-4 py-3 text-sm">{staff.sn}</td>
-                      <td className="border border-gray-300 px-4 py-3 text-sm font-semibold text-gray-800">{staff.name}</td>
-                      <td className="border border-gray-300 px-4 py-3 text-sm">{staff.designation}</td>
-                      <td className="border border-gray-300 px-4 py-3 text-sm">{staff.subject}</td>
-                      <td className="border border-gray-300 px-4 py-3 text-sm">{staff.qualification}</td>
-                      <td className="border border-gray-300 px-4 py-3 text-sm">{staff.dob}</td>
-                      <td className="border border-gray-300 px-4 py-3 text-sm">{staff.doi}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+      {/* Content Section */}
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-[#FDB813]"></div>
+            <p className="mt-4 text-gray-600">Loading staff members...</p>
+          </div>
+        ) : error ? (
+          <div className="text-center py-12">
+            <p className="text-red-600">{error}</p>
+            <button 
+              onClick={fetchStaffMembers}
+              className="mt-4 bg-[#FDB813] text-[#0C2E5C] px-6 py-2 rounded font-semibold hover:bg-[#0C2E5C] hover:text-white transition"
+            >
+              Retry
+            </button>
+          </div>
+        ) : staffMembers.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-gray-600 text-lg">No staff members found.</p>
+            <p className="text-gray-500 mt-2">Please add staff members from the admin panel.</p>
           </div>
         ) : (
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            {/* Page Title */}
-            <div className="bg-gray-50 px-6 py-4 border-b-2 border-[#0C2E5C]">
-              <h2 className="text-2xl font-bold text-[#0C2E5C]">Non Teaching Staff</h2>
-              <p className="text-sm text-gray-600 mt-1">
-                College environment needs a superb teaching faculty! But, there can't be reasonable performance and no result without the presence of effective non-teaching faculty.
+          <div className="bg-white rounded-lg shadow-sm">
+            {/* Title Section - Dynamic Content */}
+            <div className="bg-gray-100 px-8 py-6 border-b-2 border-gray-300">
+              <h2 className="text-2xl font-bold text-[#0C2E5C]">{pageContent.title}</h2>
+              <p className="text-gray-600 text-sm mt-1">
+                {pageContent.description}
               </p>
             </div>
 
-            {/* Non-Teaching Staff Heading */}
-            <div className="px-6 py-4 bg-white border-b">
-              <h3 className="text-xl font-bold text-[#0C2E5C]">Non-Teaching Staff (Class-III)</h3>
+            {/* Table Header - Dynamic Section Title */}
+            <div className="px-8 py-4 border-b border-gray-300">
+              <h3 className="text-xl font-bold text-[#0C2E5C]">{pageContent.sectionTitle}</h3>
             </div>
 
-            {/* Table */}
+            {/* Staff Table - Exact Same Structure as Screenshot */}
             <div className="overflow-x-auto">
-              <table className="w-full border-collapse">
+              <table className="w-full">
                 <thead>
-                  <tr className="bg-gray-100">
-                    <th className="border border-gray-300 px-6 py-3 text-left text-sm font-semibold text-gray-700 w-32">S.N.</th>
-                    <th className="border border-gray-300 px-6 py-3 text-left text-sm font-semibold text-gray-700">NAME</th>
-                    <th className="border border-gray-300 px-6 py-3 text-left text-sm font-semibold text-gray-700">DESIGNATION</th>
+                  <tr className="bg-gray-200 border-b border-gray-300">
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-r border-gray-300">
+                      S.N.
+                    </th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-r border-gray-300">
+                      NAME OF FACULTY
+                    </th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-r border-gray-300">
+                      DESIGNATION
+                    </th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-r border-gray-300">
+                      SUBJECT
+                    </th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-r border-gray-300">
+                      QUALIFICATION
+                    </th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-r border-gray-300">
+                      D.O.B
+                    </th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
+                      DOJ
+                    </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white">
-                  {nonTeachingStaff.map((staff, index) => (
-                    <tr key={index} className="hover:bg-gray-50">
-                      <td className="border border-gray-300 px-6 py-4 text-base">{staff.sn}</td>
-                      <td className="border border-gray-300 px-6 py-4 text-base font-medium text-gray-800">{staff.name}</td>
-                      <td className="border border-gray-300 px-6 py-4 text-base">{staff.designation}</td>
+                <tbody>
+                  {staffMembers.map((staff, index) => (
+                    <tr 
+                      key={staff.id} 
+                      className={`border-b border-gray-300 ${
+                        index % 2 === 0 ? 'bg-yellow-50' : 'bg-white'
+                      } hover:bg-yellow-100 transition`}
+                    >
+                      <td className="px-6 py-4 text-sm text-gray-800 border-r border-gray-300">
+                        {index + 1}
+                      </td>
+                      <td className="px-6 py-4 text-sm font-semibold text-gray-900 border-r border-gray-300 uppercase">
+                        {staff.name}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-800 border-r border-gray-300">
+                        {staff.designation}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-800 border-r border-gray-300 uppercase">
+                        {staff.subject || '-'}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-800 border-r border-gray-300">
+                        {staff.qualification}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-800 border-r border-gray-300">
+                        {staff.dob ? new Date(staff.dob).toLocaleDateString('en-GB') : '-'}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-800">
+                        {new Date(staff.date_of_joining).toLocaleDateString('en-GB')}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
